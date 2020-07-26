@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const chalk =  require("chalk")
+const os = require("os")
+const execSync = require('child_process').execSync;
+
+const interfaces = os.networkInterfaces()
+let IPAddress = '';
+for(var devName in interfaces){  
+  var iface = interfaces[devName];  
+  for(var i=0;i<iface.length;i++){  
+        var alias = iface[i];  
+        if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){  
+              IPAddress = alias.address;  
+        }  
+  }  
+} 
+
+let currentNodeVersion = process.versions.node;
+
+let npmVersion = execSync('npm --version').toString().trim();
+
+
+console.log('Your ip address is', chalk.blue(IPAddress));
+console.log('Your node version is', chalk.blue(currentNodeVersion));
+console.log('Your node version is', chalk.blue(npmVersion));

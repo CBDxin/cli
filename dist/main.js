@@ -46,4 +46,6 @@ _commander2.default.command("init <type> [name] [otherParams...]").alias("i").de
 //子命令模式，
 _commander2.default.command("test", "test");
 
+_commander2.default.command("envInfo", "获取设备信息");
+
 _commander2.default.version(require("../package.json").version, "-v --version").parse(process.argv);

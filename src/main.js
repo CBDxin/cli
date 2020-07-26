@@ -37,4 +37,6 @@ program
 //子命令模式，
 program.command("test", "test");
 
+program.command("envInfo", "获取设备信息");
+
 program.version(require("../package.json").version, "-v --version").parse(process.argv);

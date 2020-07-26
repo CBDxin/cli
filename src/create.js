@@ -1,6 +1,7 @@
 import symbol from "log-symbols";
 import chalk from "chalk";
 import inquirer from "inquirer";
+import path from "path";
 import ora from "ora";
 
 import { isExist, downloadTPL, updateJsonFile } from "./util";
@@ -25,19 +26,27 @@ let create = async projectName => {
 				},
 			])
 			.then(answers => {
+        const root = path.resolve(projectName);
+        
+        console.log(`在${chalk.green(root)}下创建应用.`);
+
 				let loading = ora("开始下载...");
 				loading.start('"开始下载..."');
-        let api = 'direct:https://gitee.com/fujinxiang/node-ejs.git';
-        downloadTPL(projectName, api).then(()=>{
-          loading.succeed("模板下载成功！")
+				let api = "direct:https://gitee.com/fujinxiang/node-ejs.git";
+				// let api = "direct:git@github.com:CBDxin/VueSocial.git";
 
-          let PJSONName = `${projectName}/package.json`;
-          updateJsonFile(PJSONName, {name:projectName, ...answers}).then(()=>{
-            console.log(symbol.success, chalk.green('配置文件以更新。'));
-          })
-        }).catch((err)=>{
-          loading.fail("文件下载失败:" + err.message.trim())
-        })
+				downloadTPL(projectName, api)
+					.then(() => {
+						loading.succeed("模板下载成功！");
+
+						let PJSONName = `${projectName}/package.json`;
+						updateJsonFile(PJSONName, { name: projectName, ...answers }).then(() => {
+							console.log(symbol.success, chalk.green("配置文件以更新。"));
+						});
+					})
+					.catch(err => {
+						loading.fail("文件下载失败:" + err.message.trim());
+					});
 			});
 	}
 };
