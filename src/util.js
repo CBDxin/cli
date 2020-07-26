@@ -1,7 +1,7 @@
-import fs from "fs";
-import downloadGit from "download-git-repo";
+const fs = require("fs");
+const downloadGit = require("download-git-repo");
 
-export let isExist = async name => {
+let isExist = async name => {
 	if (fs.existsSync(name)) {
 		return true;
 	} else {
@@ -9,7 +9,7 @@ export let isExist = async name => {
 	}
 };
 
-export let downloadTPL = (ProjectName, api) => {
+let downloadTPL = (ProjectName, api) => {
 	return new Promise((resolve, reject) => {
 		downloadGit(api, ProjectName, { clone: true }, err => {
 			if (err) {
@@ -21,7 +21,7 @@ export let downloadTPL = (ProjectName, api) => {
 	});
 };
 
-export let updateJsonFile = (fileName, option) => {
+let updateJsonFile = (fileName, option) => {
 	return new Promise(resolve => {
 		if (fs.existsSync(fileName)) {
 			const data = fs.readFileSync(fileName).toString();
@@ -34,3 +34,9 @@ export let updateJsonFile = (fileName, option) => {
 		}
 	});
 };
+
+module.exports = {
+	isExist,
+	downloadTPL,
+	updateJsonFile
+}

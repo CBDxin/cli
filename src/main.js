@@ -1,12 +1,36 @@
-import program from "commander";
-import symbol from "log-symbols";
-import chalk from "chalk";
+const program = require("commander");
+const symbols = require("log-symbols");
+const chalk = require("chalk");
+const create = require("./create");
 
-import create from "./create";
+const Webpack = require("webpack");
+const WebpackDevServer = require("webpack-dev-server");
+
+const defaultConfig = require("./webpack.config");
+
+const defaultDevConfig = Object.assign({}, defaultConfig, { mode: "development" });
+const defaultProdConfig = Object.assign({}, defaultConfig, { mode: "production" });
 
 // console.log(process.argv);
 
 program.usage("<command> [options]");
+
+program.command("dev").action(() => {
+	const compiler = Webpack(defaultDevConfig);
+	const devServerOptions = defaultDevConfig.devServer;
+	const devServer = new WebpackDevServer(compiler, devServerOptions);
+	devServer.listen(8080, "localhost", () => {
+		console.log("[LLB-CLI] Starting server on http://localhost:8080");
+	});
+});
+
+program.command("build").action(() => {
+	Webpack(defaultProdConfig, (err, stats) => {
+		if (err) {
+			throw err;
+		}
+	});
+});
 
 program
 	.command("create")

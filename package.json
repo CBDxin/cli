@@ -7,14 +7,11 @@
     "llb": "./bin/cmd"
   },
   "scripts": {
-    "compile": "babel src -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-env": "^2.4.1",
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
     "download-git-repo": "^2.0.0",
@@ -24,6 +21,8 @@
     "ora": "^3.4.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-runtime": "^6.23.0"
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }

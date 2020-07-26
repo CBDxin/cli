@@ -1,10 +1,9 @@
-import symbol from "log-symbols";
-import chalk from "chalk";
-import inquirer from "inquirer";
-import path from "path";
-import ora from "ora";
-
-import { isExist, downloadTPL, updateJsonFile } from "./util";
+const symbol = require("log-symbols");
+const chalk = require("chalk");
+const inquirer = require("inquirer");
+const path = require("path");
+const ora = require("ora");
+const { isExist, downloadTPL, updateJsonFile } = require("./util");
 
 let create = async projectName => {
 	if (!projectName) {
@@ -51,4 +50,4 @@ let create = async projectName => {
 	}
 };
 
-export default create;
+module.exports = create;
