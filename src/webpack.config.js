@@ -1,11 +1,12 @@
 "use strict";
 
-const { resolve } = require("path");
+const { join } = require("path");
 
 module.exports = {
-	entry: resolve(__dirname, "./entry.js"),
+	// entry: resolve(__dirname, "./entry.js"),
+	entry: join(process.cwd(), "client"),
 	output: {
-		path: resolve(__dirname, "../dist"),
+		path: join(process.cwd(), "dist"),
 		publicPath: "/dist/",
 		filename: "bundle.js",
 	},
