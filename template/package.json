@@ -4,15 +4,20 @@
   "description": "cli template",
   "main": "index.js",
   "scripts": {
-    "dev": "egg-bin dev"
+    "start": "npm-run-all --parallel client dev",
+    "dev": "egg-bin dev",
+    "client": "llb dev"
   },
   "author": "llb",
   "license": "ISC",
   "dependencies": {
     "egg": "^2.27.0",
-    "egg-view-nunjucks": "^2.2.0"
+    "egg-view-nunjucks": "^2.2.0",
+    "egg-http-proxy": "^1.0.1",
+    "llb-cli": "0.0.3"
   },
   "devDependencies": {
-    "egg-bin": "^4.15.0"
+    "egg-bin": "^4.15.0",
+    "npm-run-all": "^4.1.5"
   }
 }

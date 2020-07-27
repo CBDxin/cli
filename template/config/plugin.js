@@ -3,7 +3,7 @@ exports.nunjucks = {
 	package: "egg-view-nunjucks",
 };
 
-exports.cors = {
-	enable: true,
-	package: "egg-cors",
+exports.httpProxy = {
+  enable: true,
+  package: 'egg-http-proxy',
 };
