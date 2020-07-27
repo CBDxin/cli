@@ -2,9 +2,14 @@ const program = require("commander");
 const symbols = require("log-symbols");
 const chalk = require("chalk");
 const create = require("./create");
+const init = require("./init");
 
 const Webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
+// const WebpackDevServer = require("webpack-dev-server");
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const express = require('express');
+const app = express();
 
 const defaultConfig = require("./webpack.config");
 
@@ -17,11 +22,32 @@ program.usage("<command> [options]");
 
 program.command("dev").action(() => {
 	const compiler = Webpack(defaultDevConfig);
-	const devServerOptions = defaultDevConfig.devServer;
-	const devServer = new WebpackDevServer(compiler, devServerOptions);
-	devServer.listen(8080, "localhost", () => {
-		console.log("[LLB-CLI] Starting server on http://localhost:8080");
+	// const devServerOptions = defaultDevConfig.devServer;
+	// const devServer = new WebpackDevServer(compiler, devServerOptions);
+	// devServer.listen(8080, "localhost", () => {
+	// 	console.log("[LLB-CLI] Starting server on http://localhost:8080");
+	// });
+	const PORT = 8080;
+	const devInstance = webpackDevMiddleware(compiler, {
+		publicPath: defaultDevConfig.output.publicPath,
+		quiet: true,
+		noInfo: true,
+		stats: {
+			colors: true,
+			children: false,
+		},
 	});
+
+	app.use(devInstance);
+
+	app.use(
+		webpackHotMiddleware(compiler, {
+			reload: true,
+			path: "/statics/__webpack_hmr",
+		})
+	);
+
+	app.listen(PORT, () => console.log(chalk.green(`App listening to port: ${PORT}`)));
 });
 
 program.command("build").action(() => {
@@ -45,17 +71,19 @@ program
 
 //command第一个参数为命令名称，alias为命令的别称， 其中<>包裹的为必选参数 []为选填参数 带有...的参数为剩余参数的集合
 program
-	.command("init <type> [name] [otherParams...]")
+	// .command("init <type> [name] [otherParams...]")
+	.command("init")
 	.alias("i")
 	.description("Generates new code")
 	// .option('-n, --name <items1> [items2]', 'name description', 'default value')
-	.option("-d, --day [d]")
+	// .option("-d, --day [d]")
 	.action(function (type, name, otherParams, cmd) {
-		console.log("type", type);
-		console.log("name", name);
-		console.log("other", otherParams);
-		console.log("day", cmd.day);
+		// console.log("type", type);
+		// console.log("name", name);
+		// console.log("other", otherParams);
+		// console.log("day", cmd.day);
 		// 在这里执行具体的操作
+		init();
 	});
 
 //子命令模式，

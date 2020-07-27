@@ -25,9 +25,9 @@ let create = async projectName => {
 				},
 			])
 			.then(answers => {
-        const root = path.resolve(projectName);
-        
-        console.log(`在${chalk.green(root)}下创建应用.`);
+				const root = path.resolve(projectName);
+
+				console.log(`在${chalk.green(root)}下创建应用.`);
 
 				let loading = ora("开始下载...");
 				loading.start('"开始下载..."');

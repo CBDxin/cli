@@ -1,5 +1,7 @@
 const fs = require("fs");
 const downloadGit = require("download-git-repo");
+const child_process = require("child_process");
+const path = require("path");
 
 let isExist = async name => {
 	if (fs.existsSync(name)) {
@@ -35,8 +37,23 @@ let updateJsonFile = (fileName, option) => {
 	});
 };
 
+function copyFolder() {
+	copiedPath = path.join(__dirname, '../template');
+	resultPath = path.join(process.cwd(), '/test');
+
+	if (fs.existsSync(copiedPath)) {
+		/**
+		 * @des 方式一：利用子进程操作命令行方式
+		 */
+		child_process.spawn("cp", ["-r", copiedPath, resultPath]);
+	} else {
+		console.log("do not exist path: ", copiedPath);
+	}
+}
+
 module.exports = {
 	isExist,
 	downloadTPL,
-	updateJsonFile
-}
+	updateJsonFile,
+	copyFolder,
+};
