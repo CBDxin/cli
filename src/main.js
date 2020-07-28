@@ -3,12 +3,13 @@ const symbols = require("log-symbols");
 const chalk = require("chalk");
 const create = require("./create");
 const init = require("./init");
+const didYouMean = require("didyoumean");
 
 const Webpack = require("webpack");
 // const WebpackDevServer = require("webpack-dev-server");
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const express = require('express');
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+const express = require("express");
 const app = express();
 
 const defaultConfig = require("./webpack.config");
@@ -90,5 +91,27 @@ program
 program.command("test", "test");
 
 program.command("envInfo", "获取设备信息");
+
+// 处理非法命令
+program.arguments("<command>").action(cmd => {
+	// 不退出输出帮助信息
+	program.outputHelp();
+	console.log();
+	console.log(`  ` + chalk.red(`unknown command ${chalk.yellow(cmd)}.`));
+	console.log();
+	suggestCommands(cmd);
+});
+
+// easy支持的命令
+function suggestCommands(cmd) {
+	const avaliableCommands = program.commands.map(cmd => {
+		return cmd._name;
+	});
+	// 简易智能匹配用户命令
+	const suggestion = didYouMean(cmd, avaliableCommands);
+	if (suggestion) {
+		console.log(`  ` + `Did you mean ${chalk.yellow(suggestion)}?`);
+	}
+}
 
 program.version(require("../package.json").version, "-v --version").parse(process.argv);

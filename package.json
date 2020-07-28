@@ -20,6 +20,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "commander": "^2.20.0",
     "css-loader": "^3.6.0",
+    "didyoumean": "^1.2.1",
     "download-git-repo": "^2.0.0",
     "egg-cors": "^2.2.3",
     "egg-view-nunjucks": "^2.2.0",
