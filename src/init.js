@@ -41,13 +41,12 @@ const prompting = next => {
 		])
 		.then(answers => {
 			this.answers = answers;
-			console.log(this.answers);
 			next();
 		});
 };
 
-const writing = (projectName, next) => {
-	downloadTemplate(projectName).then(() => {
+const writing = next => {
+	downloadTemplate(this.projectName).then(() => {
 		next();
 	});
 	console.log("project initiating...");
@@ -57,9 +56,11 @@ const customizing = async next => {
 	if (this.answers.webpackConfig) {
 		console.log("");
 		console.log("webpack config installing...");
-		let from = path.join(__dirname, "");
-		await copyFolder();
+		let from = path.join(__dirname, "../template/webpack");
+		let to = path.join(process.cwd(), `${this.projectName}/webpack`);
+		await copyFolder(from, to);
 	}
+	next();
 };
 
 const npmInstalling = next => {
@@ -75,11 +76,13 @@ module.exports = async projectName => {
 		console.log(symbol.error, chalk.red("项目已存在！"));
 	} else {
 		task
+			.use(next => {
+				this.projectName = projectName;
+				next();
+			})
 			.use(init)
 			.use(prompting)
-			.use(next => {
-				writing(projectName, next);
-			})
+			.use(writing)
 			.use(customizing)
 			.use(npmInstalling);
 	}
