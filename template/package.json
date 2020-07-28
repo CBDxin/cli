@@ -14,7 +14,7 @@
     "egg": "^2.27.0",
     "egg-view-nunjucks": "^2.2.0",
     "egg-http-proxy": "^1.0.1",
-    "llb-cli": "0.0.3"
+    "llb-cli": "0.0.5"
   },
   "devDependencies": {
     "egg-bin": "^4.15.0",
