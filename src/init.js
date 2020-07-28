@@ -1,18 +1,20 @@
 const program = require("commander");
 const inquirer = require("inquirer");
 const Task = require("./Task");
+const symbol = require("log-symbols");
+const chalk = require("chalk");
 
-const { copyFolder } = require("./util");
+const { downloadTemplate, isExist } = require("./util");
 
 const task = new Task(program, process);
 
-const init = (next) => {
+const init = next => {
 	let version = require("../package.json").version;
 	console.log(`version: ${version}`);
 	next();
 };
 
-const prompting = (next) => {
+const prompting = next => {
 	inquirer
 		.prompt([
 			{
@@ -25,26 +27,53 @@ const prompting = (next) => {
 				name: "author",
 				message: "请输入作者名称:",
 			},
+			{
+				type: "confirm",
+				name: "webpackConfig",
+				message: "是否需要进行webpack配置更改：",
+			},
+			{
+				type: "confirm",
+				name: "fridayConfig",
+				message: "是否需要添加friday配置：",
+			},
 		])
 		.then(answers => {
-      this.answers = answers;
-      next()
-    });
+			this.answers = answers;
+			console.log(this.answers);
+			next();
+		});
 };
 
-const writing = (next) => {
-  copyFolder().then(()=>{
-		next()
-	})
+const writing = (projectName, next) => {
+	downloadTemplate(projectName).then(() => {
+		next();
+	});
 	console.log("project initiating...");
-	
 };
 
-const npmInstalling = (next) => {
+const customizing = (next) =>{
+
+}
+
+const npmInstalling = next => {
 	console.log("npm installing...");
 	next();
 };
 
-module.exports = () => {
-	task.use(init).use(prompting).use(writing).use(npmInstalling);
+module.exports = async projectName => {
+	if (!projectName) {
+		console.log(symbol.error, chalk.red("请输入项目名称！"));
+	} else if (await isExist(projectName)) {
+		console.log(symbol.error, chalk.red("项目已存在！"));
+	} else {
+		task
+			.use(init)
+			.use(prompting)
+			.use(next => {
+				writing(projectName, next);
+			})
+			.use(customizing)
+			.use(npmInstalling);
+	}
 };

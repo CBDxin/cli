@@ -73,18 +73,18 @@ program
 //command第一个参数为命令名称，alias为命令的别称， 其中<>包裹的为必选参数 []为选填参数 带有...的参数为剩余参数的集合
 program
 	// .command("init <type> [name] [otherParams...]")
-	.command("init")
+	.command("init <name>")
 	.alias("i")
 	.description("Generates new code")
 	// .option('-n, --name <items1> [items2]', 'name description', 'default value')
 	// .option("-d, --day [d]")
-	.action(function (type, name, otherParams, cmd) {
+	.action(function (name, otherParams, cmd) {
 		// console.log("type", type);
 		// console.log("name", name);
 		// console.log("other", otherParams);
 		// console.log("day", cmd.day);
 		// 在这里执行具体的操作
-		init();
+		init(name);
 	});
 
 //子命令模式，

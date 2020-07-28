@@ -37,26 +37,30 @@ let updateJsonFile = (fileName, option) => {
 	});
 };
 
-function copyFolder() {
+function copyFolder(copiedPath, resultPath) {
 	return new Promise((resolve, reject) => {
-		copiedPath = path.join(__dirname, "../template");
-		resultPath = path.join(process.cwd(), "/template");
-
 		if (fs.existsSync(copiedPath)) {
 			let cp = child_process.spawn("cp", ["-r", copiedPath, resultPath]);
 			cp.on("close", () => {
-				resolve()
+				resolve();
 			});
 		} else {
-			reject()
+			reject();
 			console.log("do not exist path: ", copiedPath);
 		}
 	});
 }
+
+const downloadTemplate = async projectName => {
+	let copiedPath = path.join(__dirname, "../template");
+	let resultPath = path.join(process.cwd(), projectName);
+	return await copyFolder(copiedPath, resultPath);
+};
 
 module.exports = {
 	isExist,
 	downloadTPL,
 	updateJsonFile,
 	copyFolder,
+	downloadTemplate
 };
