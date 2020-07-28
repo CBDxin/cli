@@ -37,11 +37,11 @@ const getCssLoaders = importLoaders => [
 
 module.exports = {
 	entry: isDev
-		? ["webpack-hot-middleware/client?path=/statics/__webpack_hmr", join(process.cwd(), "client")]
+		? ["webpack-hot-middleware/client?path=/public/__webpack_hmr", join(process.cwd(), "client")]
 		: join(process.cwd(), "client"),
 	output: {
 		path: join(process.cwd(), "app/public"),
-		publicPath: "/statics/",
+		publicPath: "/public/",
 		chunkFilename: "[name].chunk.js",
 		filename: "bundle.js",
 	},

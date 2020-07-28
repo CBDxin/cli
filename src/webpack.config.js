@@ -9,10 +9,10 @@ const isDev = process.env.NODE_ENV !== "production";
 
 // module.exports = {
 // 	// entry: resolve(__dirname, "./entry.js"),
-// 	entry: ["webpack-hot-middleware/client?path=/statics/__webpack_hmr", join(process.cwd(), "client")],
+// 	entry: ["webpack-hot-middleware/client?path=/public/__webpack_hmr", join(process.cwd(), "client")],
 // 	output: {
 // 		path: join(process.cwd(), "app/public"),
-// 		publicPath:"/statics/",
+// 		publicPath:"/public/",
 // 		chunkFilename: '[name].chunk.js',
 // 		filename: "bundle.js",
 // 	},

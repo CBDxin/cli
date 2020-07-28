@@ -12,17 +12,13 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 const express = require("express");
 const app = express();
 
-const defaultConfig = require("./webpack.config");
-
-const defaultDevConfig = Object.assign({}, defaultConfig, { mode: "development" });
-const defaultProdConfig = Object.assign({}, defaultConfig, { mode: "production" });
-
 // console.log(process.argv);
 
 program.usage("<command> [options]");
 
 program.command("dev").action(() => {
-	const compiler = Webpack(defaultDevConfig);
+	const defaultConfig = require("./webpack.config");
+	const compiler = Webpack(defaultConfig);
 	// const devServerOptions = defaultDevConfig.devServer;
 	// const devServer = new WebpackDevServer(compiler, devServerOptions);
 	// devServer.listen(8080, "localhost", () => {
@@ -30,7 +26,7 @@ program.command("dev").action(() => {
 	// });
 	const PORT = 8080;
 	const devInstance = webpackDevMiddleware(compiler, {
-		publicPath: defaultDevConfig.output.publicPath,
+		publicPath: defaultConfig.output.publicPath,
 		quiet: true,
 		noInfo: true,
 		stats: {
@@ -44,7 +40,7 @@ program.command("dev").action(() => {
 	app.use(
 		webpackHotMiddleware(compiler, {
 			reload: true,
-			path: "/statics/__webpack_hmr",
+			path: "/public/__webpack_hmr",
 		})
 	);
 
@@ -52,9 +48,13 @@ program.command("dev").action(() => {
 });
 
 program.command("build").action(() => {
-	Webpack(defaultProdConfig, (err, stats) => {
+	process.env.NODE_ENV = "production";
+	const defaultConfig = require("./webpack.config");
+	Webpack(defaultConfig, (err, stats) => {
 		if (err) {
 			throw err;
+		} else {
+			console.log("success!");
 		}
 	});
 });

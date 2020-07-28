@@ -3,8 +3,9 @@ const inquirer = require("inquirer");
 const Task = require("./Task");
 const symbol = require("log-symbols");
 const chalk = require("chalk");
+const path = require("path");
 
-const { downloadTemplate, isExist } = require("./util");
+const { downloadTemplate, isExist, copyFolder } = require("./util");
 
 const task = new Task(program, process);
 
@@ -52,11 +53,17 @@ const writing = (projectName, next) => {
 	console.log("project initiating...");
 };
 
-const customizing = (next) =>{
-
-}
+const customizing = async next => {
+	if (this.answers.webpackConfig) {
+		console.log("");
+		console.log("webpack config installing...");
+		let from = path.join(__dirname, "");
+		await copyFolder();
+	}
+};
 
 const npmInstalling = next => {
+	console.log("");
 	console.log("npm installing...");
 	next();
 };
