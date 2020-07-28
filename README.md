@@ -16,9 +16,16 @@
 4. customizing：
  根据用户的配置，修改和新增对应模板文件
  * webpack config
- * 组件库选择
- * 通用服务的选择
+    * 是否可配置
 
+ * 组件库选择
+    * 远程拉取组件库
+
+ * 通用服务的选择
+    * Friday
+    * fe-monitor
+    * 配置中心
+    
  4. npmInstalling：
  进行依赖的安装
 
