@@ -52,7 +52,7 @@ function copyFolder(copiedPath, resultPath) {
 }
 
 const downloadTemplate = async projectName => {
-	let copiedPath = path.join(__dirname, "../template");
+	let copiedPath = path.join(__dirname, "../template/egg-react");
 	let resultPath = path.join(process.cwd(), projectName);
 	return await copyFolder(copiedPath, resultPath);
 };
