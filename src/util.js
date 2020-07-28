@@ -37,6 +37,13 @@ let updateJsonFile = (fileName, option) => {
 	});
 };
 
+let writeJsonTo = (json , path) => {
+	return new Promise(resolve => {
+		fs.writeFileSync(path, JSON.stringify(json, null, "\t"), "utf-8");
+		resolve();
+	});
+};
+
 function copyFolder(copiedPath, resultPath) {
 	return new Promise((resolve, reject) => {
 		if (fs.existsSync(copiedPath)) {
@@ -62,5 +69,6 @@ module.exports = {
 	downloadTPL,
 	updateJsonFile,
 	copyFolder,
-	downloadTemplate
+	downloadTemplate,
+	writeJsonTo
 };

@@ -5,7 +5,7 @@ const symbol = require("log-symbols");
 const chalk = require("chalk");
 const path = require("path");
 
-const { downloadTemplate, isExist, copyFolder } = require("./util");
+const { downloadTemplate, isExist, copyFolder, writeJsonTo } = require("./util");
 
 const task = new Task(program, process);
 
@@ -53,13 +53,25 @@ const writing = next => {
 };
 
 const customizing = async next => {
+	let config = {
+		friday:false,
+		webpackConfig:false
+	};
 	if (this.answers.webpackConfig) {
+		config.webpackConfig = true;
 		console.log("");
 		console.log("webpack config installing...");
 		let from = path.join(__dirname, "../template/webpack");
 		let to = path.join(process.cwd(), `${this.projectName}/webpack`);
 		await copyFolder(from, to);
 	}
+	
+	if(this.answers.friday){
+		config.friday = true;
+	}
+
+	await writeJsonTo(config, path.join(process.cwd(), `${this.projectName}/llb.config.json`))
+
 	next();
 };
 
