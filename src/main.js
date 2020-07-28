@@ -5,6 +5,9 @@ const create = require("./create");
 const init = require("./init");
 const didYouMean = require("didyoumean");
 
+const { isExist } = require("./util");
+const path = require("path");
+
 const Webpack = require("webpack");
 // const WebpackDevServer = require("webpack-dev-server");
 const webpackDevMiddleware = require("webpack-dev-middleware");
@@ -15,9 +18,20 @@ const app = express();
 // console.log(process.argv);
 
 program.usage("<command> [options]");
-
 program.command("dev").action(() => {
-	const defaultConfig = require("./webpack.config");
+	let defaultConfig;
+	if (
+		isExist(path.join(process.cwd(), "/webpack/webpack.dev.config.js")) &&
+		require(path.join(process.cwd(), "/webpack/webpack.dev.config.js"))
+	) {
+		defaultConfig = {
+			...require("./webpack.config"),
+			...require(path.join(process.cwd(), "/webpack/webpack.dev.config.js")),
+		};
+	} else {
+		defaultConfig = require("./webpack.config");
+	}
+
 	const compiler = Webpack(defaultConfig);
 	// const devServerOptions = defaultDevConfig.devServer;
 	// const devServer = new WebpackDevServer(compiler, devServerOptions);
@@ -49,7 +63,18 @@ program.command("dev").action(() => {
 
 program.command("build").action(() => {
 	process.env.NODE_ENV = "production";
-	const defaultConfig = require("./webpack.config");
+	let defaultConfig;
+	if (
+		isExist(path.join(process.cwd(), "/webpack/webpack.prod.config.js")) &&
+		require(path.join(process.cwd(), "/webpack/webpack.prod.config.js"))
+	) {
+		defaultConfig = {
+			...require("./webpack.config"),
+			...require(path.join(process.cwd(), "/webpack/webpack.prod.config.js")),
+		};
+	} else {
+		defaultConfig = require("./webpack.config");
+	}
 	Webpack(defaultConfig, (err, stats) => {
 		if (err) {
 			throw err;

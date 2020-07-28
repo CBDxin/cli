@@ -53,14 +53,14 @@ const writing = (projectName, next) => {
 	console.log("project initiating...");
 };
 
-const customizing = async next => {
-	if (this.answers.webpackConfig) {
-		console.log("");
-		console.log("webpack config installing...");
-		let from = path.join(__dirname, "");
-		await copyFolder();
-	}
-};
+// const customizing = async next => {
+// 	if (this.answers.webpackConfig) {
+// 		console.log("");
+// 		console.log("webpack config installing...");
+// 		let from = path.join(__dirname, "");
+// 		await copyFolder();
+// 	}
+// };
 
 const npmInstalling = next => {
 	console.log("");
@@ -80,7 +80,7 @@ module.exports = async projectName => {
 			.use(next => {
 				writing(projectName, next);
 			})
-			.use(customizing)
+			// .use(customizing)
 			.use(npmInstalling);
 	}
 };
