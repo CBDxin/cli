@@ -33,8 +33,10 @@ const prompting = (next) => {
 };
 
 const writing = (next) => {
-  copyFolder()
-	console.log(this.answers);
+  copyFolder().then(()=>{
+		next()
+	})
+	console.log("project initiating...");
 	
 };
 

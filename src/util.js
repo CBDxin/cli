@@ -38,17 +38,20 @@ let updateJsonFile = (fileName, option) => {
 };
 
 function copyFolder() {
-	copiedPath = path.join(__dirname, '../template');
-	resultPath = path.join(process.cwd(), '/test');
+	return new Promise((resolve, reject) => {
+		copiedPath = path.join(__dirname, "../template");
+		resultPath = path.join(process.cwd(), "/template");
 
-	if (fs.existsSync(copiedPath)) {
-		/**
-		 * @des 方式一：利用子进程操作命令行方式
-		 */
-		child_process.spawn("cp", ["-r", copiedPath, resultPath]);
-	} else {
-		console.log("do not exist path: ", copiedPath);
-	}
+		if (fs.existsSync(copiedPath)) {
+			let cp = child_process.spawn("cp", ["-r", copiedPath, resultPath]);
+			cp.on("close", () => {
+				resolve()
+			});
+		} else {
+			reject()
+			console.log("do not exist path: ", copiedPath);
+		}
+	});
 }
 
 module.exports = {
