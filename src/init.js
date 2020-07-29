@@ -5,7 +5,7 @@ const symbol = require("log-symbols");
 const chalk = require("chalk");
 const path = require("path");
 
-const { downloadTemplate, isExist, copyFolder, writeJsonTo } = require("./util");
+const { downloadTemplate, isExist, copyFolder, writeJsonTo, updateJsonFile } = require("./util");
 
 const task = new Task(program, process);
 
@@ -35,7 +35,7 @@ const prompting = next => {
 			},
 			{
 				type: "confirm",
-				name: "fridayConfig",
+				name: "friday",
 				message: "是否需要添加friday配置：",
 			},
 		])
@@ -46,16 +46,25 @@ const prompting = next => {
 };
 
 const writing = next => {
-	downloadTemplate(this.projectName).then(() => {
-		next();
-	});
 	console.log("project initiating...");
+	downloadTemplate(this.projectName).then(() => {
+		console.log(symbol.success, chalk.green("project is initiated"));
+		console.log("");
+		console.log("update package.json...");
+		updateJsonFile(path.join(process.cwd(), `${this.projectName}/package.json`), {
+			name: this.projectName,
+			...this.answers,
+		}).then(() => {
+			console.log(symbol.success, chalk.green("package.json is updated"));
+			next();
+		});
+	});
 };
 
 const customizing = async next => {
 	let config = {
-		friday:false,
-		webpackConfig:false
+		friday: false,
+		webpackConfig: false,
 	};
 	if (this.answers.webpackConfig) {
 		config.webpackConfig = true;
@@ -64,13 +73,14 @@ const customizing = async next => {
 		let from = path.join(__dirname, "../template/webpack");
 		let to = path.join(process.cwd(), `${this.projectName}/webpack`);
 		await copyFolder(from, to);
+		console.log(symbol.success, chalk.green(`webpack config is installded in ${this.projectName}/webpack`));
 	}
-	
-	if(this.answers.friday){
+
+	if (this.answers.friday) {
 		config.friday = true;
 	}
 
-	await writeJsonTo(config, path.join(process.cwd(), `${this.projectName}/llb.config.json`))
+	await writeJsonTo(config, path.join(process.cwd(), `${this.projectName}/llb.config.json`));
 
 	next();
 };
