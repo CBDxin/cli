@@ -5,7 +5,7 @@ const create = require("./create");
 const init = require("./init");
 const didYouMean = require("didyoumean");
 
-const { isExist } = require("./util");
+const fs = require("fs-extra");
 const path = require("path");
 
 const Webpack = require("webpack");
@@ -21,7 +21,7 @@ program.usage("<command> [options]");
 program.command("dev").action(() => {
 	let defaultConfig;
 	if (
-		isExist(path.join(process.cwd(), "/webpack/webpack.dev.config.js")) &&
+		fs.existsSync(path.join(process.cwd(), "/webpack/webpack.dev.config.js")) &&
 		require(path.join(process.cwd(), "/webpack/webpack.dev.config.js"))
 	) {
 		defaultConfig = {
@@ -65,7 +65,7 @@ program.command("build").action(() => {
 	process.env.NODE_ENV = "production";
 	let defaultConfig;
 	if (
-		isExist(path.join(process.cwd(), "/webpack/webpack.prod.config.js")) &&
+		fs.existsSync(path.join(process.cwd(), "/webpack/webpack.prod.config.js")) &&
 		require(path.join(process.cwd(), "/webpack/webpack.prod.config.js"))
 	) {
 		defaultConfig = {
@@ -79,7 +79,7 @@ program.command("build").action(() => {
 		if (err) {
 			throw err;
 		} else {
-			console.log("success!");
+			console.log(`success! ${stats.endTime - stats.startTime}`);
 		}
 	});
 });

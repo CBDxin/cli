@@ -1,4 +1,4 @@
-const program = require("commander");
+// const program = require("commander");
 const inquirer = require("inquirer");
 const Task = require("./Task");
 const symbol = require("log-symbols");
@@ -7,7 +7,7 @@ const path = require("path");
 
 const { downloadTemplate, isExist, copyFolder, writeJsonTo, updateJsonFile } = require("./util");
 
-const task = new Task(program, process);
+const task = new Task();
 
 const init = next => {
 	let version = require("../package.json").version;
