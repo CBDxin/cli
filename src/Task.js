@@ -1,6 +1,4 @@
-function Task(program, process) {
-	this.program = program;
-	this.process = process;
+function Task() {
 	this.taskStack = new Array();
 	this.currentIndex = -1;
 	this.answers = {};
