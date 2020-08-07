@@ -44,7 +44,7 @@ module.exports = {
 		path: join(process.cwd(), "app/public"),
 		publicPath: "/public/",
 		chunkFilename: "[name].chunk.js",
-		filename: "bundle.js",
+		filename: "[name].js",
 	},
 	module: {
 		rules: [

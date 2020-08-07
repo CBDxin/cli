@@ -15,7 +15,7 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 const express = require("express");
 const app = express();
 
-// console.log(process.argv);
+console.log(process.argv);
 
 program.usage("<command> [options]");
 program.command("dev").action(() => {
