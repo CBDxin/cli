@@ -113,8 +113,6 @@ task
  3. writing：
  利用`child_process.spawn`将template下egg-react复制到当前的工作目录下作为项目的基础模板
  ```
- };
-
 function copyFolder(copiedPath, resultPath) {
 	return new Promise((resolve, reject) => {
 		if (fs.existsSync(copiedPath)) {

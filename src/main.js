@@ -13,6 +13,7 @@ const Webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const express = require("express");
+const { join } = require("path");
 const app = express();
 
 console.log(process.argv);
@@ -82,6 +83,36 @@ program.command("build").action(() => {
 			console.log(`success! ${stats.endTime - stats.startTime}`);
 		}
 	});
+});
+
+program.command("quickStart <fliePath>").action((fliePath) => {
+	let defaultConfig = require("./webpack.config");
+
+	defaultConfig.entry[1] = join(process.cwd(), fliePath);
+
+	const compiler = Webpack(defaultConfig);
+
+	const PORT = 8080;
+	const devInstance = webpackDevMiddleware(compiler, {
+		publicPath: defaultConfig.output.publicPath,
+		quiet: true,
+		noInfo: true,
+		stats: {
+			colors: true,
+			children: false,
+		},
+	});
+
+	app.use(devInstance);
+
+	app.use(
+		webpackHotMiddleware(compiler, {
+			reload: true,
+			path: "/public/__webpack_hmr",
+		})
+	);
+
+	app.listen(PORT, () => console.log(chalk.green(`App listening to port: ${PORT}`)));
 });
 
 program
